@@ -2,5 +2,5 @@ services:
   - type: web
     name: book-recommender
     env: docker
+    plan: free
     dockerfilePath: ./Dockerfile
-    plan: free  # or standard
