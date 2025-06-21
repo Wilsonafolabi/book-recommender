@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: your-app-name
+    env: python
+    pythonVersion: "3.11"
+    buildCommand: |
+      python -m pip install --upgrade pip setuptools wheel
+      pip install -r requirements.txt
+    startCommand: python web.py
