@@ -1,7 +1,7 @@
-Flask==3.0.3
-torch==2.2.2  # keep this after setting correct Python version
-transformers==4.41.1
-sentence-transformers==2.7.0
-pandas==2.2.2
-scikit-learn==1.4.2
+Flask==3.1.1
+torch==2.7.1
+transformers==4.52.4
+sentence-transformers==4.1.0
+pandas==2.3.0
+scikit-learn==1.7.0
 sentencepiece==0.2.0
