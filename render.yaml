@@ -1,10 +1,6 @@
 services:
   - type: web
     name: book-recommender
-    env: python
-    pythonVersion: "3.11"
-    buildCommand: |
-      python --version
-      python -m pip install --upgrade pip setuptools wheel
-      pip install -r requirements.txt
-    startCommand: python web.py
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free  # or standard
