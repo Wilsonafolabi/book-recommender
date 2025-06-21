@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>📚 Book Recommender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f8f8f8;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .book-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 220px;
+            text-align: center;
+            padding: 15px;
+            transition: transform 0.2s;
+        }
+
+        .book-card:hover {
+            transform: scale(1.03);
+        }
+
+        .book-card img {
+            width: 150px;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .book-card h3 {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .book-card p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .book-card a {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #0066cc;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>📘 Book Recommender</h1>
+
+    <div class="search-box">
+        <input type="text" id="query" placeholder="Type a topic e.g. Yoruba History" />
+        <input type="number" id="top_n" placeholder="Top N" value="5" min="1" max="20" />
+        <button id="recommend-btn">Recommend</button>
+    </div>
+
+    <div class="book-grid" id="results"></div>
+
+    <script>
+        document.getElementById("recommend-btn").onclick = async function () {
+            const query = document.getElementById("query").value;
+            const topN = parseInt(document.getElementById("top_n").value) || 5;
+
+            const response = await fetch("/recommend", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ query: query, top_n: topN }),
+            });
+
+            const results = await response.json();
+            displayResults(results);
+        };
+
+        function displayResults(results) {
+            const container = document.getElementById("results");
+            container.innerHTML = "";
+
+            results.forEach(book => {
+                const card = document.createElement("div");
+                card.className = "book-card";
+
+                card.innerHTML = `
+                    <img src="${book.image_url}" alt="Book cover">
+                    <h3>${book.title}</h3>
+                    <p>${book.author}</p>
+                    <a href="${book.link}" target="_blank">View Book</a>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
