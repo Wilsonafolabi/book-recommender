@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>📚 Book Recommender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f8f8f8;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"], input[type="number"], select {
+            padding: 10px;
+            width: 200px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .sort-box {
+            max-width: 700px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .book-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 220px;
+            text-align: center;
+            padding: 15px;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .book-card:hover {
+            transform: scale(1.03);
+        }
+
+        .book-card img {
+            width: 150px;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 6px;
+        }
+
+        .book-card h3 {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .book-card p {
+            font-size: 14px;
+            color: #555;
+            margin: 3px 0;
+        }
+
+        .book-card a {
+            margin-top: auto;
+            text-decoration: none;
+            color: #0066cc;
+            font-weight: bold;
+        }
+
+        .stars {
+            color: gold;
+            font-size: 18px;
+        }
+
+        .star-empty {
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>📘 Book Recommender</h1>
+
+    <div class="search-box">
+        <input type="text" id="query" placeholder="Type a topic e.g. Yoruba History" />
+        <input type="number" id="top_n" placeholder="Top N" value="5" min="1" max="20" />
+        <button id="recommend-btn">Recommend</button>
+    </div>
+
+    <div class="sort-box">
+        <label for="sort-by">Sort by:</label>
+        <select id="sort-by">
+            <option value="rating">Rating (High → Low)</option>
+            <option value="year">Year (New → Old)</option>
+            <option value="pages">Pages (Low → High)</option>
+            <option value="genre">Genre (A → Z)</option>
+        </select>
+    </div>
+
+    <div class="book-grid" id="results"></div>
+
+    <script>
+        const apiBase = "https://emeritus-21-oau-book-recommender.hf.space";
+
+        function getStars(rating) {
+            const full = Math.floor(rating);
+            const half = rating - full >= 0.5 ? 1 : 0;
+            const empty = 5 - full - half;
+
+            let html = "";
+            for (let i = 0; i < full; i++) html += '<span class="stars">★</span>';
+            if (half) html += '<span class="stars">☆</span>';
+            for (let i = 0; i < empty; i++) html += '<span class="stars star-empty">★</span>';
+            return html;
+        }
+
+        let currentResults = [];
+
+        document.getElementById("recommend-btn").onclick = async function () {
+            const query = document.getElementById("query").value;
+            const topN = document.getElementById("top_n").value || 5;
+
+            if (!query) {
+                alert("Type something to search.");
+                return;
+            }
+
+            const url = `${apiBase}/recommend/query/?query=${encodeURIComponent(query)}&top_n=${topN}`;
+
+            try {
+                const res = await fetch(url);
+                const books = await res.json();
+                currentResults = books;
+                sortAndDisplay(currentResults);
+            } catch (err) {
+                alert("Something went wrong. Try again.");
+                console.error(err);
+            }
+        };
+
+        document.getElementById("sort-by").onchange = function () {
+            sortAndDisplay(currentResults);
+        };
+
+        function sortAndDisplay(results) {
+            const sortBy = document.getElementById("sort-by").value;
+            let sorted = [...results];
+
+            switch (sortBy) {
+                case "rating":
+                    sorted.sort((a, b) => b.rating - a.rating); break;
+                case "year":
+                    sorted.sort((a, b) => b.year - a.year); break;
+                case "pages":
+                    sorted.sort((a, b) => a.pages - b.pages); break;
+                case "genre":
+                    sorted.sort((a, b) => a.genre.localeCompare(b.genre)); break;
+            }
+
+            displayBooks(sorted);
+        }
+
+        function displayBooks(books) {
+            const container = document.getElementById("results");
+            container.innerHTML = "";
+
+            books.forEach(book => {
+                const card = document.createElement("div");
+                card.className = "book-card";
+
+                card.innerHTML = `
+                    <img src="${book.image_url}" alt="Book cover">
+                    <h3>${book.title}</h3>
+                    <p><strong>Author:</strong> ${book.author}</p>
+                    <p><strong>Genre:</strong> ${book.genre}</p>
+                    <p><strong>Year:</strong> ${book.year}</p>
+                    <p><strong>Pages:</strong> ${book.pages}</p>
+                    <p><strong>Rating:</strong> ${getStars(book.rating)} (${book.rating.toFixed(1)})</p>
+                    <a href="${book.link}" target="_blank">📖 View Book</a>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
