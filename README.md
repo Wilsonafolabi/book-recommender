@@ -1,6 +1,6 @@
 # 📚 OAU Book Recommender
 
-A smart book recommendation system built for students at Obafemi Awolowo University. It recommends books based on topic keywords, ratings, genre, page count, and more — powered by a lightweight semantic search API.
+A smart book recommendation system built for students at Obafemi Awolowo University. It recommends books based on topic keywords, ratings, genre, page count, and more — powered by semantic search using a custom Hugging Face model.
 
 ---
 
@@ -15,8 +15,8 @@ A smart book recommendation system built for students at Obafemi Awolowo Univers
 - 📑 **API Docs (Swagger UI)**:  
   🔗 [https://emeritus-21-oau-book-recommender.hf.space/docs](https://emeritus-21-oau-book-recommender.hf.space/docs)
 
-- 🧪 **Try an example**:  
-  🔗 [Query for "python"](https://emeritus-21-oau-book-recommender.hf.space/recommend/query/?query=python)
+- 🧪 **Try a sample query**:  
+  🔗 [Search for "python"](https://emeritus-21-oau-book-recommender.hf.space/recommend/query/?query=python)
 
 ---
 
@@ -26,22 +26,25 @@ A smart book recommendation system built for students at Obafemi Awolowo Univers
 ✅ Filter by top N, rating, year, or number of pages  
 ✅ Sort by rating, year, genre, or page count  
 ✅ Live preview with cover images and links  
-✅ Semantic matching using sentence transformers  
-✅ No signup or login needed — just search and explore
+✅ Semantic search using Sentence Transformers  
+✅ No login or signup required — just plug and play
 
 ---
 
 ## ⚙️ Tech Stack
 
-- **Frontend**: HTML, CSS, JavaScript (Vanilla)
-- **Backend**: FastAPI, SentenceTransformers, Scikit-learn
-- **Model**: Text Embedding via `sentence-transformers/all-MiniLM-L6-v2`
-- **Hosting**:
-  - Hugging Face Spaces (API)
-  - GitHub Pages (Frontend)
+- **Frontend**: HTML, CSS, Vanilla JavaScript  
+- **Backend**: FastAPI, Scikit-learn, Hugging Face Transformers  
+- **Model**: Sentence Transformer
+
+  ✅ [View Custom Model on Hugging Face](https://huggingface.co/Emeritus-21/Book-Recommender_system)
+
+- **Hosting**:  
+  - API: Hugging Face Spaces  
+  - UI: GitHub Pages
 
 ---
 
-## 📦 Sample API Usage
+## 📦 API Overview
 
 ### Endpoint
