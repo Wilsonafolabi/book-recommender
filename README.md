@@ -1,57 +1,47 @@
 # 📚 OAU Book Recommender
 
-A hybrid book recommendation system for Obafemi Awolowo University Library. It combines **content-based**, **collaborative filtering**, and **semantic search** using sentence embeddings, TF-IDF, and cosine similarity.
+A smart book recommendation system built for students at Obafemi Awolowo University. It recommends books based on topic keywords, ratings, genre, page count, and more — powered by a lightweight semantic search API.
 
 ---
 
 ## 🚀 Live Demo
 
-Try the full system:
+- 🌐 **Frontend (UI)**:  
+  🔗 [https://wilsonafolabi.github.io/book-recommender/](https://wilsonafolabi.github.io/book-recommender/)
 
-- 🔗 **Frontend UI** (Static HTML):  
-  [https://wilsonafolabi.github.io/book-recommender/](https://wilsonafolabi.github.io/book-recommender/)
+- 🧠 **API (Hugging Face Spaces)**:  
+  🔗 [https://emeritus-21-oau-book-recommender.hf.space](https://emeritus-21-oau-book-recommender.hf.space)
 
-- ⚙️ **Public API (via Hugging Face Space)**:  
-  [https://huggingface.co/spaces/Emeritus-21/oau-book-recommender](https://huggingface.co/spaces/Emeritus-21/oau-book-recommender)
+- 📑 **API Docs (Swagger UI)**:  
+  🔗 [https://emeritus-21-oau-book-recommender.hf.space/docs](https://emeritus-21-oau-book-recommender.hf.space/docs)
 
----
-
-## 📌 Features
-
-- 🔍 Search books by **title** or **topic/keywords**
-- 🧠 Uses **Sentence Transformers** for semantic matching
-- 🧾 Filters and ranks results based on:
-  - Ratings
-  - Year
-  - Page count
-  - Genre
-- 📦 Fully deployed: Frontend on GitHub Pages, Backend on Hugging Face Spaces
+- 🧪 **Try an example**:  
+  🔗 [Query for "python"](https://emeritus-21-oau-book-recommender.hf.space/recommend/query/?query=python)
 
 ---
 
-## 🛠️ Tech Stack
+## 🧠 Features
 
-- **Backend**: FastAPI + Scikit-learn + Sentence Transformers
-- **Frontend**: Vanilla HTML/CSS/JS
-- **Deployment**:  
-  - Frontend → GitHub Pages  
-  - Backend API → Hugging Face Spaces
-
----
-
-## 🧠 How It Works
-
-1. **TF-IDF** vectorizes book metadata (title, author, publisher, genre).
-2. **Sentence Transformer** encodes semantic meaning.
-3. **Collaborative filtering** uses ratings similarity.
-4. All features are combined and passed into **KNN (cosine similarity)** to return top recommendations.
+✅ Search by book topic or title  
+✅ Filter by top N, rating, year, or number of pages  
+✅ Sort by rating, year, genre, or page count  
+✅ Live preview with cover images and links  
+✅ Semantic matching using sentence transformers  
+✅ No signup or login needed — just search and explore
 
 ---
 
-## 📡 Public API
+## ⚙️ Tech Stack
 
-You can directly call the backend API from anywhere using the link above.
+- **Frontend**: HTML, CSS, JavaScript (Vanilla)
+- **Backend**: FastAPI, SentenceTransformers, Scikit-learn
+- **Model**: Text Embedding via `sentence-transformers/all-MiniLM-L6-v2`
+- **Hosting**:
+  - Hugging Face Spaces (API)
+  - GitHub Pages (Frontend)
 
-### Example Endpoint:
-```http
-GET /recommend/query/?query=python&top_n=5
+---
+
+## 📦 Sample API Usage
+
+### Endpoint
